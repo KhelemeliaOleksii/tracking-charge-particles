@@ -46,3 +46,37 @@ int configureParams1D2ndODE(double *timeInitial, double *coordInitial, double *v
     strcat(*msg, "\tStatus: SUCCESS. Parameters is configured.");
     return 0;
 }
+
+int configureParams(double *timeFinal, int *numberStep, char **msg)
+{
+    strcpy(*msg, "FUNCTION: ");
+    strcat(*msg, __func__);
+    strcat(*msg, "\n");
+
+    float ti, ci, vi, tf;
+    int ns;
+
+    printf("Configure parameters:\n");
+
+    printf("Enter final time value, tn = ");
+    scanf("%f", &tf);
+    *timeFinal = tf;
+
+    printf("Enter number of steps: ");
+    scanf("%d", &ns);
+    *numberStep = ns;
+
+    if ((*timeFinal) < 0)
+    {
+        strcat(*msg, "\tStatus:ERROR. Invalid initial condition: timeFinal  < 0\n");
+        return -1;
+    };
+    if (fabs(*timeFinal) <= 1.e-16)
+    {
+        strcat(*msg, "\tStatus:ERROR. Invalid initial condition!: timeFinal <= 1.e-16\n");
+        return -1;
+    };
+
+    strcat(*msg, "\tStatus: SUCCESS. Parameters is configured.");
+    return 0;
+}

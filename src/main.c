@@ -13,7 +13,7 @@
 #include "../include/configureParams.h"
 #include "../include/types.h"
 #include "../include/performRungeKutta4th2ndODE.h"
-#include "../include/equestion2ndODE.h"
+#include "../include/equations.h"
 
 int main()
 {
@@ -30,7 +30,6 @@ int main()
         return -1;
     }
 
-    
     performRungeKutta4th2ndODE(timeInitial, coordInitial, velocityInitial, timeFinal, numberStep, equestion2ndODE);
 
     // printf("Press any key to exit...\n");
