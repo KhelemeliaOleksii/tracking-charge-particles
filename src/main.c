@@ -10,30 +10,66 @@
 #include <conio.h>
 #include <stdlib.h>
 
-#include "../include/configureParams.h"
+// #include "../include/configureParams.h"
 #include "../include/types.h"
-#include "../include/performRungeKutta4th2ndODE.h"
-#include "../include/equations.h"
+// #include "../include/performRungeKutta4th2ndODE.h"
+// #include "../include/equations.h"
+#include "../include/createParticle.h"
+#include "../include/constants.h"
 
 int main()
 {
-    double timeInitial, coordInitial, velocityInitial, timeFinal;
-    int numberStep;
+    FILE *file_ptr;
+    struct ParticleInCartesian3D3V particle;
+    struct PositionParticleCartesian3D positionInitial;
+    struct MomentumParticleCartesian3V momentumInitial;
+    double charge = 1;
+    double mass = 1;
+    double radius = 20;
+    double energyFull = 1000000;
+    double energyCalm = 500000;
 
-    char *ptr_msg;
-    ptr_msg = (char *)malloc(200 * sizeof(char));
+    char *msg_ptr; // message container of results how the procedures work
+    msg_ptr = (char *)malloc(200 * sizeof(char));
 
-    if (configureParams1D2ndODE(&timeInitial, &coordInitial, &velocityInitial, &timeFinal, &numberStep, &ptr_msg) < 0)
+    file_ptr = fopen("run_results.dat", "a");
+
+    if (file_ptr == NULL)
     {
-        fprintf(stderr, "%s", ptr_msg);
-        free(ptr_msg);
+        fprintf(stderr, "File cannot be created!");
+        return -1;
+    }
+    fseek(file_ptr, 0, SEEK_END);
+    if (ftell(file_ptr) == 0)
+    {
+        fprintf(file_ptr, "Charge\tMass\tXInit\tYInit\tZInit\tPxInit\tPyInit\tPzInit\n");
+    }
+
+    if (setPositionOnSphereSurfaceCartesianMullerMarsagliaRandom(0, 0, 0, radius, &positionInitial, &msg_ptr) < 0)
+    {
+        // fprintf(stderr, "%s", msg_ptr);
+
+        fclose(file_ptr);
+        free(msg_ptr);
+        return -1;
+    }
+    if (setMomentumCartesianWithCustomEnergyRandom(energyFull, energyCalm, &momentumInitial, &msg_ptr) < 0)
+    {
+        // fprintf(stderr, "%s", msg_ptr);
+
+        fclose(file_ptr);
+        free(msg_ptr);
         return -1;
     }
 
-    performRungeKutta4th2ndODE(timeInitial, coordInitial, velocityInitial, timeFinal, numberStep, equestion2ndODE);
+    createParticleCartesian3D3V(charge, mass, positionInitial, momentumInitial, &particle);
 
-    // printf("Press any key to exit...\n");
-    // getch();
-    free(ptr_msg);
+    fprintf(file_ptr, "%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\n",
+            mass, charge,
+            positionInitial.x, positionInitial.y, positionInitial.z,
+            momentumInitial.px, momentumInitial.py, momentumInitial.pz);
+
+    fclose(file_ptr);
+    free(msg_ptr);
     return 0;
 }

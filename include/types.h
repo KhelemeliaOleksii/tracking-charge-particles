@@ -21,30 +21,30 @@ struct FieldsCartesian
     struct MagneticFieldCartesian magFldCart;
 };
 
-struct PositionParticleCartesian
+struct PositionParticleCartesian3D
 {
     double x;
     double y;
     double z;
 };
 
-struct MomentumParticleCartesian
+struct MomentumParticleCartesian3V
 {
     double px;
     double py;
     double pz;
 };
 
-struct CoordsCartesian
+struct CoordsCartesian3D3V
 {
-    struct PositionParticleCartesian posPrtclCart;
-    struct MomentumParticleCartesian momPrtclCart;
+    struct PositionParticleCartesian3D positionParticle;
+    struct MomentumParticleCartesian3V momentumParticle;
 };
 
-struct Particle
+struct ParticleInCartesian3D3V
 {
-    struct PositionParticleCartesian r;
-    struct MomentumParticleCartesian p;
+    struct PositionParticleCartesian3D r;
+    struct MomentumParticleCartesian3V p;
     double mass;
     double charge;
 };
