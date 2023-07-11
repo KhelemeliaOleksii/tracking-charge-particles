@@ -9,6 +9,7 @@
 #include <math.h>
 #include <conio.h>
 #include <stdlib.h>
+#include <time.h>
 
 // #include "../include/configureParams.h"
 #include "../include/types.h"
@@ -20,19 +21,23 @@
 int main()
 {
     FILE *file_ptr;
-    struct ParticleInCartesian3D3V particle;
-    struct PositionParticleCartesian3D positionInitial;
-    struct MomentumParticleCartesian3V momentumInitial;
-    double charge = 1;
-    double mass = 1;
-    double radius = 20;
-    double energyFull = 1000000;
-    double energyCalm = 500000;
+    struct ParticleInCartesian3D3V particleInitial;
+    // struct ParticleInCartesian3D3V particleFinal;
+    // struct PositionParticleCartesian3D positionInitial;
+    // struct MomentumParticleCartesian3V momentumInitial;
+    double charge = 1.;
+    double mass = 1.;
+    double sphereRadius = 20.;
+    double energyFull = 1000000.;
+    double energyRest = 500000.;
+
+    time_t tSeed;
+    srand((unsigned)time(&tSeed));
 
     char *msg_ptr; // message container of results how the procedures work
-    msg_ptr = (char *)malloc(200 * sizeof(char));
+    msg_ptr = (char *)malloc(400 * sizeof(char));
 
-    file_ptr = fopen("run_results.dat", "a");
+    file_ptr = fopen("resultsRun.dat", "a");
 
     if (file_ptr == NULL)
     {
@@ -44,30 +49,31 @@ int main()
     {
         fprintf(file_ptr, "Charge\tMass\tXInit\tYInit\tZInit\tPxInit\tPyInit\tPzInit\n");
     }
-
-    if (setPositionOnSphereSurfaceCartesianMullerMarsagliaRandom(0, 0, 0, radius, &positionInitial, &msg_ptr) < 0)
+    for (int i = 0; i < 100000; i++)
     {
-        // fprintf(stderr, "%s", msg_ptr);
-
-        fclose(file_ptr);
-        free(msg_ptr);
-        return -1;
-    }
-    if (setMomentumCartesianWithCustomEnergyRandom(energyFull, energyCalm, &momentumInitial, &msg_ptr) < 0)
-    {
-        // fprintf(stderr, "%s", msg_ptr);
-
-        fclose(file_ptr);
-        free(msg_ptr);
-        return -1;
+        createParticleOnSphereSurfaceCartesian3DRandom3VRandom(charge, mass, energyFull, energyRest, sphereRadius,
+                                                               &particleInitial, &msg_ptr);
+        fprintf(file_ptr, "%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\n",
+                particleInitial.charge, particleInitial.mass,
+                particleInitial.r.x, particleInitial.r.y, particleInitial.r.z,
+                particleInitial.p.px, particleInitial.p.py, particleInitial.p.pz);
     }
 
-    createParticleCartesian3D3V(charge, mass, positionInitial, momentumInitial, &particle);
-
-    fprintf(file_ptr, "%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\n",
-            mass, charge,
-            positionInitial.x, positionInitial.y, positionInitial.z,
-            momentumInitial.px, momentumInitial.py, momentumInitial.pz);
+    // if (setPositionOnSphereSurfaceCartesianMullerMarsagliaRandom(0, 0, 0, radius, &positionInitial, &msg_ptr) < 0)
+    // {
+    //     fprintf(stderr, "%s", msg_ptr);
+    //     fclose(file_ptr);
+    //     free(msg_ptr);
+    //     return -1;
+    // }
+    // if (setMomentumCartesianWithCustomEnergyRandom(energyFull, energyCalm, &momentumInitial, &msg_ptr) < 0)
+    // {
+    //     fprintf(stderr, "%s", msg_ptr);
+    //     fclose(file_ptr);
+    //     free(msg_ptr);
+    //     return -1;
+    // }
+    // createParticleCartesian3D3V(charge, mass, positionInitial, momentumInitial, &particle);
 
     fclose(file_ptr);
     free(msg_ptr);

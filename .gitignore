@@ -1,4 +1,7 @@
 # Logs
+*.exe
+resultsRun.dat
+
 logs
 *.log
 npm-debug.log*

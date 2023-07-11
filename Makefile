@@ -45,7 +45,7 @@ SRCDIR = src
 TARGET = run
 
 # _DEPS = initSystem.h initSuperParticles.h distributeParticles.h
-_DEPS =  types.h createParticle.h
+_DEPS =  types.h createParticle.h constants.h
 # equestion2ndODE.h performRungeKutta4th2ndODE.h configureParams.h
 
 DEPS = ${patsubst %, ${INCDIR}/%, ${_DEPS}}

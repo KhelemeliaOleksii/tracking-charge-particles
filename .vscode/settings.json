@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "time.h": "c",
-        "equations.h": "c"
-    }
+        "equations.h": "c",
+        "constants.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }
