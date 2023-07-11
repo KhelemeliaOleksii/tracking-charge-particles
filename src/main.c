@@ -27,7 +27,8 @@ int main()
     // struct MomentumParticleCartesian3V momentumInitial;
     double charge = 1.;
     double mass = 1.;
-    double sphereRadius = 20.;
+    double radiusSphereInner = 1.;
+    double radiusSphereOuter = radiusSphereInner * 10.;
     double energyFull = 1000000.;
     double energyRest = 500000.;
 
@@ -49,9 +50,9 @@ int main()
     {
         fprintf(file_ptr, "Charge\tMass\tXInit\tYInit\tZInit\tPxInit\tPyInit\tPzInit\n");
     }
-    for (int i = 0; i < 100000; i++)
+    for (int i = 0; i < 1; i++)
     {
-        createParticleOnSphereSurfaceCartesian3DRandom3VRandom(charge, mass, energyFull, energyRest, sphereRadius,
+        createParticleOnSphereSurfaceCartesian3DRandom3VRandom(charge, mass, energyFull, energyRest, radiusSphereInner,
                                                                &particleInitial, &msg_ptr);
         fprintf(file_ptr, "%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\n",
                 particleInitial.charge, particleInitial.mass,
