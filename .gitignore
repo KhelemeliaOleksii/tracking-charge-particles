@@ -1,6 +1,9 @@
-# Logs
 *.exe
 resultsRun.dat
+/obj
+
+# Logs
+
 
 logs
 *.log
