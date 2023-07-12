@@ -1,5 +1,8 @@
+
+
 #include <math.h>
 #include <stdio.h>
+
 
 int calculateCoeff1(const double t, const double x, const double dt,
                     int function(const double xTemp, const double tTemp, double *result),
