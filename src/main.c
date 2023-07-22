@@ -16,21 +16,27 @@
 // #include "../include/performRungeKutta4th2ndODE.h"
 // #include "../include/equations.h"
 #include "../include/createParticle.h"
+#include "../include/calculateEMField.h"
 #include "../include/constants.h"
 
 int main()
 {
     FILE *file_ptr;
     struct ParticleInCartesian3D3V particleInitial;
-    // struct ParticleInCartesian3D3V particleFinal;
-    // struct PositionParticleCartesian3D positionInitial;
-    // struct MomentumParticleCartesian3V momentumInitial;
-    double charge = 1.;
-    double mass = 1.;
+    double charge = 1.; // sinf=gle charge
+    double mass = 16.;
     double radiusSphereInner = 1.;
-    double radiusSphereOuter = radiusSphereInner * 10.;
-    double energyFull = 1000000.;
-    double energyRest = 500000.;
+    // double radiusSphereOuter = radiusSphereInner * 10.;
+    double energyFull = 1000000.; // eV
+    double energyRest = 500000.;  // eV
+
+    struct EMFieldCartesian field;
+    double directionUniformMagnFieldJupiter[3] = {0, -sqrt(2) / 2, -sqrt(2) / 2}; //(0, -45deg, -45deg);
+    double valueUniformMagnFieldJupiter = 113;                                    // nT
+    double directionDipoleMagnFieldSatelite[3] = {1, 0, 1.095};
+    double valueDipoleMomentMFSatelite = 750; // nT
+    double directionQuadMagnFieldSatelite[3] = {1, 0, 0};
+    double valueQuadrupoleMomentMFSatelite = 0; // nT
 
     time_t tSeed;
     srand((unsigned)time(&tSeed));
@@ -50,10 +56,15 @@ int main()
     {
         fprintf(file_ptr, "Charge\tMass\tXInit\tYInit\tZInit\tPxInit\tPyInit\tPzInit\n");
     }
-    for (int i = 0; i < 1; i++)
+
+    for (int i = 0; i < 2; i++)
     {
         createParticleOnSphereSurfaceCartesian3DRandom3VRandom(charge, mass, energyFull, energyRest, radiusSphereInner,
                                                                &particleInitial, &msg_ptr);
+        calculateElectroMagneticField(valueUniformMagnFieldJupiter, directionUniformMagnFieldJupiter,
+                                      valueDipoleMomentMFSatelite, directionDipoleMagnFieldSatelite,
+                                      valueQuadrupoleMomentMFSatelite, directionQuadMagnFieldSatelite,
+                                      particleInitial.r, &field);
         fprintf(file_ptr, "%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\n",
                 particleInitial.charge, particleInitial.mass,
                 particleInitial.r.x, particleInitial.r.y, particleInitial.r.z,

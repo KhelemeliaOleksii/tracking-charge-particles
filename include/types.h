@@ -15,10 +15,10 @@ struct MagneticFieldCartesian
     double Bz;
 };
 
-struct FieldsCartesian
+struct EMFieldCartesian
 {
-    struct ElectricFieldCartesian eleFldCart;
-    struct MagneticFieldCartesian magFldCart;
+    struct ElectricFieldCartesian eField;
+    struct MagneticFieldCartesian mField;
 };
 
 struct PositionParticleCartesian3D

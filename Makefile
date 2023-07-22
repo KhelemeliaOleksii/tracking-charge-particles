@@ -45,13 +45,15 @@ SRCDIR = src
 TARGET = run
 
 # _DEPS = initSystem.h initSuperParticles.h distributeParticles.h
-_DEPS =  types.h createParticle.h constants.h
+_DEPS =  types.h createParticle.h constants.h calculateMagneticField.h \
+	calculateElectricField.h calculateEMField.h
 # equestion2ndODE.h performRungeKutta4th2ndODE.h configureParams.h
 
 DEPS = ${patsubst %, ${INCDIR}/%, ${_DEPS}}
 
 #Imterim object files
-_OBJ = main.o createParticle.o
+_OBJ = main.o createParticle.o calculateMagneticField.o calculateElectricField.o \
+	calculateEMField.o
 # configureParams.o equestion2ndODE.o performRungeKutta4th2ndODE.o
 OBJ = ${patsubst %, ${OBJDIR}/%, ${_OBJ}}
 
